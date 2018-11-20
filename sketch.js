@@ -1,30 +1,82 @@
-var speedY = windowHeight/2;
-var speedX = windowWidth/2;
-function preload(){
-  // put preload code here
+var field;
+var ball;
+var basket;
+
+var balls = [];
+
+
+var speedY;
+var speedX;
+
+function preload() {
+  field = loadImage("assets/Court.png");
+  ballImage = loadImage("assets/Ball.png");
+  basket = loadImage("assets/Case.png");
 }
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
+  background(field);
+
+
+  var myBall = new Ball(random(width - 50), random(height - 50), speedX, speedY);
+
+  balls.push(myBall);
+
 }
 
 function draw() {
+  var speedY = windowHeight / 2;
+  var speedX = windowWidth / 2;
+
+  background(field);
+
+  speedY = map(rotationX, -45, 45, 0, windowHeight);
+  speedX = map(rotationY, -23, 23, 0, windowWidth - 60);
+
+  fill('red');
+  image(basket, speedX, speedY, 60, 70);
 
 
-  background(100);
-
-  ballMove();
-
+  for (var j = 0; j < balls.length; j++) {
+    balls[j].move();
+    balls[j].display();
+  }
 }
 
-function ballMove(){
+function Ball(_x, _y, _basketspeedX, _basketspeedY) {
 
-  var speedY = map(rotationX, -60, 90, 0, windowHeight);
-  var speedX = map(rotationY, -45, 45, 0, windowWidth);
-  
-  fill('red');
-  ellipse(speedX, speedY, 50);
+  this.x = _x;
+  this.y = _y;
+  this.speed = 1.5;
 
+  bsX = _basketspeedX;
+  bsY = _basketspeedY;
 
+  console.log(bsY);
 
+  this.yDir = 1;
+  this.xDir = 1;
+  // Methods
+  this.move = function() {
+    this.x += this.speed * this.xDir;
+    this.y += this.speed * this.yDir;
+
+    if (this.y >= height - 40 || this.y <= 0) {
+      // if 1, set to -1, if -1, set to 1
+      this.yDir *= -1;
+    }
+
+    if (this.x >= width - 40 || this.x <= 0) {
+      this.xDir *= -1;
+    }
+
+    if (this.x <= bsX + 30) {
+      console.log("ciau");
+    }
+  }
+
+  this.display = function() {
+    image(ballImage, this.x, this.y, 40, 40);
+  }
 }
