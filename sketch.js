@@ -19,7 +19,7 @@ function setup() {
   background(field);
 
 
-  var myBall = new Ball(random(width - 50), random(height - 50), speedX, speedY);
+  var myBall = new Ball(random(width - 50), random(height - 50));
 
   balls.push(myBall);
 
@@ -44,14 +44,14 @@ function draw() {
   }
 }
 
-function Ball(_x, _y, _basketspeedX, _basketspeedY) {
+function Ball(_x, _y) {
 
   this.x = _x;
   this.y = _y;
-  this.speed = 1.5;
+  this.speed = 4;
 
-  bsX = _basketspeedX;
-  bsY = _basketspeedY;
+  bsX = map(rotationY, -23, 23, 0, windowWidth - 60);
+  bsY = map(rotationX, -45, 45, 0, windowHeight);;
 
   console.log(bsY);
 
@@ -71,8 +71,11 @@ function Ball(_x, _y, _basketspeedX, _basketspeedY) {
       this.xDir *= -1;
     }
 
-    if (this.x <= bsX + 30) {
-      console.log("ciau");
+    if (this.x <= bsX + 30 && this.y <= bsY + 35 && this.x >= bsX - 30 && this.y >= bsY - 35) {
+
+      this.x = random(0, width);
+      this.y = random(0, height);
+
     }
   }
 
